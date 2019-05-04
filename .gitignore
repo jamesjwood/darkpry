@@ -7,3 +7,4 @@ darksky_input.csv
 .env
 rawResponse.json
 out/
+lib/

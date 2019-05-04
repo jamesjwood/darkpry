@@ -1,8 +1,8 @@
+import * as stream from 'stream'
+import * as dot from 'dot-object'
+import *  as types from './types'
 
-const { Transform } = require('stream')
-const dot = require('dot-object')
-
-class FlattenHoursTransform extends Transform {
+class FlattenHoursTransform extends stream.Transform {
   constructor () {
     super({
       objectMode: true,
@@ -23,7 +23,7 @@ class FlattenHoursTransform extends Transform {
   }
 }
 
-const flattenHours = (darkSkyCoordinateJsonAsObject) => {
+const flattenHours = (darkSkyCoordinateJsonAsObject: types.IDarkSkyResponse) => {
   const flattened = []
   darkSkyCoordinateJsonAsObject.hourly.data.map((hour) => {
     flattened.push(dot.dot({
@@ -36,4 +36,4 @@ const flattenHours = (darkSkyCoordinateJsonAsObject) => {
   return flattened
 }
 
-module.exports = FlattenHoursTransform
+export default FlattenHoursTransform
