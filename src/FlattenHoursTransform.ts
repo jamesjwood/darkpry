@@ -1,39 +1,39 @@
-import * as stream from 'stream'
-import * as dot from 'dot-object'
-import *  as types from './types'
+import * as dot from "dot-object";
+import * as stream from "stream";
+import * as types from "./types";
 
 class FlattenHoursTransform extends stream.Transform {
-  constructor () {
+  constructor() {
     super({
       objectMode: true,
-      writableObjectMode: true
-    })
+      writableObjectMode: true,
+    });
   }
 
-  _transform (chunk, encoding, cb) {
-    const flattened = flattenHours(chunk)
+  public _transform(chunk, encoding, cb) {
+    const flattened = flattenHours(chunk);
     flattened.map((row) => {
-      this.push(row)
-    })
-    cb()
+      this.push(row);
+    });
+    cb();
   }
 
-  _flush (cb) {
-    cb()
+  public _flush(cb) {
+    cb();
   }
 }
 
 const flattenHours = (darkSkyCoordinateJsonAsObject: types.IDarkSkyResponse) => {
-  const flattened = []
+  const flattened = [];
   darkSkyCoordinateJsonAsObject.hourly.data.map((hour) => {
     flattened.push(dot.dot({
+      day: darkSkyCoordinateJsonAsObject.daily.data[0],
+      hour,
       latitude: darkSkyCoordinateJsonAsObject.latitude,
       longitude: darkSkyCoordinateJsonAsObject.longitude,
-      hour: hour,
-      day: darkSkyCoordinateJsonAsObject.daily.data[0]
-    }))
-  })
-  return flattened
-}
+    }));
+  });
+  return flattened;
+};
 
-export default FlattenHoursTransform
+export default FlattenHoursTransform;
